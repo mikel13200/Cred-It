@@ -439,7 +439,7 @@ class CurriculumService:
         if not account_id:
             raise ValidationException("Account ID is required")
         
-        # Update failed subjects instead of deleting
+        # Update failed subjects instead of deleting (Fix logic so Faculty can see them)
         failed_update_count = CompareResultTOR.objects.filter(
             account_id=account_id,
             subject_code__in=failed_subjects
