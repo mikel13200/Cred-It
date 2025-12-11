@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import register_credit_profile, login_credit_profile
-from .secure_auth_views import secure_login, refresh_token, secure_logout, get_current_user
+from .secure_auth_views import secure_login, refresh_token, secure_logout, get_current_user, google_login, github_login
 
 urlpatterns = [
     # Legacy endpoints (keep for backward compatibility)
@@ -9,6 +9,8 @@ urlpatterns = [
     
     # Secure JWT endpoints (new)
     path("auth/login/", secure_login, name="secure_login"),
+    path("auth/google/", google_login, name="google_login"),
+    path("auth/github/", github_login, name="github_login"),
     path("auth/refresh/", refresh_token, name="refresh_token"),
     path("auth/logout/", secure_logout, name="secure_logout"),
     path("auth/me/", get_current_user, name="current_user"),

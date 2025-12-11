@@ -219,6 +219,70 @@ export function AuthProvider({ children }) {
   }, []);
 
   /**
+   * Google Login - Authenticate user with Google OAuth token
+   */
+  const googleLogin = useCallback(async (token) => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/google/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Google Login failed');
+
+      const userData = data.user;
+      dispatch({ type: 'LOGIN', payload: userData });
+      authSync.broadcastLogin(userData);
+
+      return { success: true, user: userData };
+    } catch (error) {
+      console.error('Google login error', error);
+      const message = error.message || 'Google Login failed';
+      dispatch({ type: 'SET_ERROR', payload: message });
+      return { success: false, error: message };
+    }
+  }, []);
+
+  /**
+   * GitHub Login - Authenticate user with GitHub OAuth code
+   */
+  const githubLogin = useCallback(async (code) => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/github/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'GitHub Login failed');
+
+      const userData = data.user;
+      dispatch({ type: 'LOGIN', payload: userData });
+      authSync.broadcastLogin(userData);
+
+      return { success: true, user: userData };
+    } catch (error) {
+      console.error('GitHub login error', error);
+      const message = error.message || 'GitHub Login failed';
+      dispatch({ type: 'SET_ERROR', payload: message });
+      return { success: false, error: message };
+    }
+  }, []);
+
+  /**
    * Logout - Clear authentication
    */
   const logout = useCallback(async () => {
@@ -295,6 +359,8 @@ export function AuthProvider({ children }) {
 
     // Methods
     login,
+    googleLogin,
+    githubLogin,
     logout,
     updateUser,
     hasRole,

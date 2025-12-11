@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useAuthContext } from '../../../context';
+import { useNotification } from '../../../hooks';
 import { createPortal } from 'react-dom';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
@@ -136,15 +140,38 @@ function AuthModalWrapper({ isOpen, onClose, children }) {
 }
 
 export function LoginModal({ isOpen, onClose }) {
+  const { googleLogin, user } = useAuthContext();
+  const { showSuccess, showError } = useNotification();
+  const navigate = useNavigate();
+
+  // Redirect if logged in
+  useEffect(() => {
+    if (user && isOpen) {
+      onClose();
+      if (user.role === 'Student') navigate('/HomePage');
+      else if (user.role === 'Faculty') navigate('/DepartmentHome');
+    }
+  }, [user, isOpen, onClose, navigate]);
+
   const handleGitHubLogin = () => {
-    // TODO: Implement GitHub OAuth login
-    console.log('GitHub login clicked');
+    const CLIENT_ID = "Ov23liODb2T8BFwNHulw"; // Replace this
+    const REDIRECT_URI = window.location.origin + "/auth/callback";
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user:email`;
   };
 
-  const handleGoogleLogin = () => {
-    // TODO: Implement Google OAuth login
-    console.log('Google login clicked');
-  };
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const { success, error } = await googleLogin(tokenResponse.access_token);
+      if (success) {
+        showSuccess('Logged in via Google!');
+      } else {
+        showError(error);
+      }
+    },
+    onError: () => showError('Google Login Failed'),
+  });
+
+  const handleGoogleLogin = () => loginWithGoogle();
 
   return (
     <AuthModalWrapper isOpen={isOpen} onClose={onClose}>
@@ -179,15 +206,39 @@ export function LoginModal({ isOpen, onClose }) {
 }
 
 export function RegisterModal({ isOpen, onClose, onSuccess }) {
+  const { googleLogin, user } = useAuthContext();
+  const { showSuccess, showError } = useNotification();
+  const navigate = useNavigate();
+
+  // Redirect if logged in
+  useEffect(() => {
+    if (user && isOpen) {
+      onClose();
+      if (user.role === 'Student') navigate('/HomePage');
+      else if (user.role === 'Faculty') navigate('/DepartmentHome');
+    }
+  }, [user, isOpen, onClose, navigate]);
+
   const handleGitHubSignup = () => {
-    // TODO: Implement GitHub OAuth signup
-    console.log('GitHub signup clicked');
+    const CLIENT_ID = "Ov23liODb2T8BFwNHulw"; // Replace this
+    const REDIRECT_URI = window.location.origin + "/auth/callback";
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user:email`;
   };
 
-  const handleGoogleSignup = () => {
-    // TODO: Implement Google OAuth signup
-    console.log('Google signup clicked');
-  };
+  const signupWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const { success, error } = await googleLogin(tokenResponse.access_token);
+      if (success) {
+        showSuccess('Account created via Google!');
+        onSuccess && onSuccess();
+      } else {
+        showError(error);
+      }
+    },
+    onError: () => showError('Google Signup Failed'),
+  });
+
+  const handleGoogleSignup = () => signupWithGoogle();
 
   return (
     <AuthModalWrapper isOpen={isOpen} onClose={onClose}>

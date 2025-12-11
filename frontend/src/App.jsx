@@ -10,12 +10,14 @@ import {
 } from './pages/faculty';
 import { StudentRoute, FacultyRoute } from './components/common';
 import { AuthProvider, NotificationProvider } from './context';
+import AuthCallback from './features/auth/components/AuthCallback';
 
 function AppContent() {
   return (
     <Routes>
       {/* Public Route */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
 
       {/* Protected Student Routes */}
       <Route
@@ -75,15 +77,22 @@ function AppContent() {
   );
 }
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 function App() {
+  // Replace with your actual Google Client ID from Google Cloud Console
+  const GOOGLE_CLIENT_ID = "860757277869-oncacfs23f3h40hhj0sliiq8chdo88cv.apps.googleusercontent.com.apps.googleusercontent.com";
+
   return (
-    <Router>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppContent />
-        </NotificationProvider>
-      </AuthProvider>
-    </Router>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <Router>
+        <AuthProvider>
+          <NotificationProvider>
+            <AppContent />
+          </NotificationProvider>
+        </AuthProvider>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 
