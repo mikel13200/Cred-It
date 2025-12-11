@@ -1,4 +1,5 @@
 import React from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import { HomePage as StudentHome, StudentDocumentPage } from './pages/student';
@@ -77,7 +78,6 @@ function AppContent() {
   );
 }
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   // Replace with your actual Google Client ID from Google Cloud Console
