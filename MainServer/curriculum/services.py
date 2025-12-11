@@ -439,15 +439,11 @@ class CurriculumService:
         if not account_id:
             raise ValidationException("Account ID is required")
         
-        # Update failed subjects instead of deleting (Fix logic so Faculty can see them)
-        failed_update_count = CompareResultTOR.objects.filter(
+        # Delete failed subjects
+        deleted_count, _ = CompareResultTOR.objects.filter(
             account_id=account_id,
             subject_code__in=failed_subjects
-        ).update(
-            remarks='FAILED',
-            credit_evaluation=CompareResultTOR.CreditEvaluation.DENIED,
-            updated_at=models.F('updated_at')
-        )
+        ).delete()
         
         # Update passed subjects
         updated_count = 0
@@ -463,12 +459,12 @@ class CurriculumService:
         
         logger.info(
             f"Updated TOR results for {account_id}: "
-            f"{failed_update_count} marked failed, {updated_count} passed"
+            f"{deleted_count} deleted, {updated_count} updated"
         )
         
         return {
-            "deleted": 0,
-            "updated": updated_count + failed_update_count
+            "deleted": deleted_count,
+            "updated": updated_count
         }
     
     @staticmethod
