@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect, useCallback } 
 import { onLogout } from '../api/client';
 import { authSync } from '../utils/authSync';
 import { tokenStorage } from '../utils/tokenStorage';
+import { API_BASE_URL } from '../api/config';
 
 // User roles constants
 export const USER_ROLES = {
@@ -84,7 +85,7 @@ export function AuthProvider({ children }) {
         }
 
         // Option 2: Secure check - verify session with backend
-        const response = await fetch('http://localhost:8000/api/auth/me/', {
+        const response = await fetch(`${API_BASE_URL}/auth/me/`, {
           method: 'GET',
           credentials: 'include', // Send cookies
           headers: {
@@ -164,7 +165,7 @@ export function AuthProvider({ children }) {
     console.log('Sending request body:', requestBody);
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login/', {
+      const response = await fetch(`${API_BASE_URL}/auth/login/`, {
         method: 'POST',
         credentials: 'include',  // CRITICAL: Send/receive cookies
         headers: {
@@ -224,7 +225,7 @@ export function AuthProvider({ children }) {
     try {
       const token = tokenStorage.getAccessToken();
       if (token) {
-        await fetch('http://localhost:8000/api/logout/', {
+        await fetch(`${API_BASE_URL}/logout/`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
