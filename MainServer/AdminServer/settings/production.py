@@ -92,8 +92,8 @@ SECURE_ADMIN_SECRET = os.getenv('SECURE_ADMIN_SECRET', 'admin')
 ADMIN_URL = f'{SECURE_ADMIN_SECRET}/'
 
 # Logging - send errors to file and possibly external service
-LOGGING['handlers']['file']['filename'] = '/var/log/credit_system/django.log'
-LOGGING['handlers']['file']['maxBytes'] = 1024 * 1024 * 50  # 50 MB
+# LOGGING['handlers']['file']['filename'] = '/var/log/credit_system/django.log'
+# LOGGING['handlers']['file']['maxBytes'] = 1024 * 1024 * 50  # 50 MB
 
 # Optional: Sentry for error tracking
 SENTRY_DSN = os.getenv('SENTRY_DSN')
