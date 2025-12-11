@@ -7,6 +7,7 @@ ENV DJANGO_ENV=production
 # Dummy secret key for build phase (collectstatic)
 ENV SECRET_KEY=build_secret_key_placeholder
 ENV ALLOWED_HOSTS=localhost
+ENV CORS_ALLOWED_ORIGINS=http://localhost:3000
 
 # Set work directory
 WORKDIR /code
