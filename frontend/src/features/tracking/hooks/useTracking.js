@@ -2,7 +2,8 @@
 /**
  * Tracking hook - Updated for new backend
  */
-import { useState, useEffect, useNotification } from 'react';
+import { useState, useEffect } from 'react';
+import { useNotification } from '../../../hooks';
 import { trackingApi } from '../../../api';
 
 export function useTracking(userName) {
