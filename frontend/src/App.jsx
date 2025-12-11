@@ -81,7 +81,7 @@ function AppContent() {
 
 function App() {
   // Replace with your actual Google Client ID from Google Cloud Console
-  const GOOGLE_CLIENT_ID = "860757277869-oncacfs23f3h40hhj0sliiq8chdo88cv.apps.googleusercontent.com.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID = "860757277869-oncacfs23f3h40hhj0sliiq8chdo88cv.apps.googleusercontent.com";
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
