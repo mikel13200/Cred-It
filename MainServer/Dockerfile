@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libgl1 \
     libglib2.0-0 \
+    python3-dev \
+    default-libmysqlclient-dev \
+    pkg-config \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
