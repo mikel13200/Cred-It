@@ -4,6 +4,9 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_ENV=production
+# Dummy secret key for build phase (collectstatic)
+ENV SECRET_KEY=build_secret_key_placeholder
+ENV ALLOWED_HOSTS=localhost
 
 # Set work directory
 WORKDIR /code
