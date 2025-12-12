@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Header,
   SidebarStudent,
@@ -38,8 +38,15 @@ export default function HomePage() {
   const { uploadOcr, loading, ocrResults } = useTorUpload();
 
   // Profile check
-  const { profileExists, loading: profileLoading, checkExists } = useProfile(userName);
+  const { profileExists, loading: profileLoading, checkExists, checkComplete } = useProfile(userName);
   const { showError } = useNotification();
+
+  // Auto-open profile for new users
+  useEffect(() => {
+    if (checkComplete && !profileExists && !profileLoading) {
+      profileModal.open();
+    }
+  }, [checkComplete, profileExists, profileLoading]);
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 

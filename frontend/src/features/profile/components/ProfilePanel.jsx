@@ -22,7 +22,11 @@ export default function ProfilePanel({ userId, isOpen, onClose, onSaveSuccess })
       size="md"
     >
       <ModalContent>
-        <ProfileForm profile={profile} onUpdate={updateProfile} />
+        <ProfileForm
+          profile={profile}
+          onUpdate={updateProfile}
+          showWarning={!loading && !profileExists}
+        />
       </ModalContent>
 
       <ModalFooter>

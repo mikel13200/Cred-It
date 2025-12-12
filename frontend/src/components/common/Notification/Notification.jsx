@@ -55,7 +55,7 @@ export function Notification({ type = 'info', message, onClose, show }) {
   const currentStyle = styles[type];
 
   return (
-    <div className="fixed top-6 right-6 z-50 animate-slide-in-right">
+    <div className="fixed top-6 right-6 z-[60] animate-slide-in-right">
       <div className={`${currentStyle.bg} ${currentStyle.text} border-2 ${currentStyle.border} rounded-xl shadow-2xl min-w-[320px] max-w-[500px] overflow-hidden`}>
         {/* Main Content */}
         <div className="flex items-start gap-3 p-4">

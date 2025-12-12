@@ -20,6 +20,7 @@ export function useProfile(userId) {
   });
   const [loading, setLoading] = useState(false);
   const [profileExists, setProfileExists] = useState(false);
+  const [checkComplete, setCheckComplete] = useState(false);
   const { showSuccess, showError } = useNotification();
 
   /**
@@ -33,7 +34,7 @@ export function useProfile(userId) {
       try {
         // API returns unwrapped data: { user_id, name, school_name, ... }
         const data = await profileApi.getProfile(userId);
-        
+
         if (data) {
           // Map backend response to state
           setProfile({
@@ -61,6 +62,7 @@ export function useProfile(userId) {
         });
       } finally {
         setLoading(false);
+        setCheckComplete(true);
       }
     };
 
@@ -89,7 +91,7 @@ export function useProfile(userId) {
     try {
       // Backend returns saved profile data
       const data = await profileApi.saveProfile(profile);
-      
+
       // Update local state with saved data (in case backend modified anything)
       if (data) {
         setProfile({
@@ -102,7 +104,7 @@ export function useProfile(userId) {
           date_of_birth: data.date_of_birth || profile.date_of_birth,
         });
       }
-      
+
       showSuccess('Profile saved successfully!');
       setProfileExists(true);
       return true;
@@ -140,6 +142,7 @@ export function useProfile(userId) {
     profile,
     loading,
     profileExists,
+    checkComplete,
 
     // Methods
     updateProfile,
