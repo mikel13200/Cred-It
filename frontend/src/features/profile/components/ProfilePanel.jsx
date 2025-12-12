@@ -3,12 +3,13 @@ import { Modal, ModalContent, ModalFooter, Button } from '../../../components/co
 import { useProfile } from '../hooks/useProfile';
 import ProfileForm from './ProfileForm';
 
-export default function ProfilePanel({ userId, isOpen, onClose }) {
+export default function ProfilePanel({ userId, isOpen, onClose, onSaveSuccess }) {
   const { profile, updateProfile, saveProfile, loading, profileExists } = useProfile(userId);
 
   const handleSave = async () => {
     const success = await saveProfile();
     if (success) {
+      if (onSaveSuccess) onSaveSuccess();
       setTimeout(() => onClose(), 1500);
     }
   };

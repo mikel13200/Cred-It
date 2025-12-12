@@ -37,8 +37,8 @@ export default function HomePage() {
 
   const { uploadOcr, loading, ocrResults } = useTorUpload();
 
- // Profile check
-  const { profileExists, loading: profileLoading } = useProfile(userName);
+  // Profile check
+  const { profileExists, loading: profileLoading, checkExists } = useProfile(userName);
   const { showError } = useNotification();
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
@@ -243,6 +243,7 @@ export default function HomePage() {
           userId={userName}
           isOpen={profileModal.isOpen}
           onClose={profileModal.close}
+          onSaveSuccess={checkExists}
         />
 
         {showProcessingModal && (
