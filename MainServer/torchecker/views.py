@@ -12,7 +12,7 @@ from core.decorators import handle_service_exceptions
 from .services.ocr_service import OCRService
 from .services.tor_service import TorService
 from .serializers import TorTransfereeSerializer, UniqueStudentSerializer
-from .models import TorTransferee
+from .models import TorTransferee, TorDocument
 from curriculum.models import CitTorContent
 import logging
 

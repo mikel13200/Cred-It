@@ -4,7 +4,7 @@ import {
   SidebarStudent,
   BackgroundLayout,
 } from '../../components/layout';
-import { ProfilePanel } from '../../features/profile';
+
 import {
   MultiImageUploader,
   ImagePreviewPanel,
@@ -13,8 +13,9 @@ import {
   TorInfo,
   useTorUpload,
 } from '../../features/transcript';
+import { ProfilePanel, useProfile } from '../../features/profile';
 import { SubmissionsList } from '../../features/tracking';
-import { useModal } from '../../hooks';
+import { useModal, useNotification } from '../../hooks';
 import { useAuthContext } from '../../context';
 import { Upload, Sparkles } from 'lucide-react';
 
@@ -36,10 +37,9 @@ export default function HomePage() {
 
   const { uploadOcr, loading, ocrResults } = useTorUpload();
 
-  // ✅ Added missing showError function
-  const showError = (message) => {
-    alert(message);
-  };
+ // Profile check
+  const { profileExists, loading: profileLoading } = useProfile(userName);
+  const { showError } = useNotification();
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
@@ -150,7 +150,13 @@ export default function HomePage() {
 
             <div className="mt-8 sm:mt-12 flex justify-center">
               <button
-                onClick={() => setShowUploadModal(true)}
+                onClick={() => {
+                  if (!profileExists) {
+                    showError("Please Fill the Profile located upper left corner");
+                    return;
+                  }
+                  setShowUploadModal(true);
+                }}
                 className="group relative px-8 py-4 sm:px-12 sm:py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white font-bold rounded-2xl shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-300"></div>

@@ -56,6 +56,7 @@ export function useAllSubmissions(userName) {
                         progress: 1,
                         createdAt: req.created_at || new Date().toISOString(),
                         updatedAt: req.updated_at || new Date().toISOString(),
+                        torUrl: req.tor_url,
                     });
                 });
 

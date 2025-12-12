@@ -131,3 +131,34 @@ class TorTransferee(models.Model):
     def display_grade(self) -> str:
         """Get formatted grade display"""
         return f"{self.final_grade} ({self.remarks or 'N/A'})"
+
+
+class TorDocument(models.Model):
+    """
+    Uploaded TOR Document.
+    Stores the original uploaded file for reference.
+    """
+    account_id = models.CharField(
+        max_length=100,
+        validators=[validate_account_id],
+        db_index=True,
+        help_text='Student account identifier'
+    )
+    file = models.ImageField(
+        upload_to='tor_documents/%Y/%m/',
+        help_text='Uploaded TOR image'
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'tor_document'
+        verbose_name = 'TOR Document'
+        verbose_name_plural = 'TOR Documents'
+        ordering = ['-uploaded_at']
+        indexes = [
+            models.Index(fields=['account_id']),
+            models.Index(fields=['uploaded_at']),
+        ]
+        
+    def __str__(self):
+        return f"TOR - {self.account_id} - {self.uploaded_at}"

@@ -255,5 +255,14 @@ def track_user_progress(request):
                 'status': req.status,
                 'type': 'request'
             })
+
+        # Attach TOR URL if available
+        # Get latest TOR document
+        from torchecker.models import TorDocument
+        latest_doc = TorDocument.objects.filter(account_id=account_id).first()
+        tor_url = latest_doc.file.url if latest_doc else None
+        
+        for item in data:
+            item['tor_url'] = tor_url
             
     return APIResponse.success({'data': data, 'exists': len(data) > 0})

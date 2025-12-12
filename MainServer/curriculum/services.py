@@ -320,7 +320,7 @@ class CurriculumService:
                     best_match = cit
             
             # Generate summary based on match quality
-            if best_accuracy >= CurriculumService.SIMILARITY_THRESHOLD:
+            if best_accuracy >= 1.0:  # 1% to 100%
                 tor.summary = (
                     f"✓ Match Found\n"
                     f"CIT Subject: {best_match.subject_code}\n"
@@ -328,21 +328,18 @@ class CurriculumService:
                     f"Units: Student={int(tor.total_academic_units)}, CIT={best_match.units}"
                 )
                 
-                # Auto-suggest evaluation based on similarity
-                if best_accuracy >= 80 and tor.is_passing_grade:
-                    tor.credit_evaluation = CompareResultTOR.CreditEvaluation.ACCEPTED
-                elif best_accuracy >= 50:
-                    tor.credit_evaluation = CompareResultTOR.CreditEvaluation.VOID
-                else:
-                    tor.credit_evaluation = CompareResultTOR.CreditEvaluation.DENIED
-            else:
+                # Accuracy between 1% - 100% -> VOID
+                tor.credit_evaluation = CompareResultTOR.CreditEvaluation.VOID
+                
+            else:  # Below 1% (effectively 0%)
                 tor.summary = (
                     f"✗ No Match Found\n"
-                    f"Description similarity below {CurriculumService.SIMILARITY_THRESHOLD}% threshold\n"
+                    f"Description similarity below 1% threshold\n"
                     f"Best match: {best_match.subject_code if best_match else 'None'} "
                     f"({int(best_accuracy)}%)"
                 )
-                tor.credit_evaluation = CompareResultTOR.CreditEvaluation.INVESTIGATE
+                # 0% Accuracy -> DENIED
+                tor.credit_evaluation = CompareResultTOR.CreditEvaluation.DENIED
             
             # Add to bulk update list instead of saving individually
             updated_entries.append(tor)

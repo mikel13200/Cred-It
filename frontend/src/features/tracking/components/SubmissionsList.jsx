@@ -202,21 +202,37 @@ export default function SubmissionsList({ userName }) {
                                             </div>
                                         </div>
 
-                                        {/* Show View TOR Logic only if Finalized */}
-                                        {(submission.status === 'Finalized' || submission.progress === 3) && (
+                                        {/* Show View Uploaded TOR (Request Stage Only) */}
+                                        {submission.status === 'Request' && submission.torUrl && (
                                             <div className="mt-4 flex justify-end">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation(); // prevent collapsing the card
-                                                        navigate(`/student/finalDocument/${userName}`);
-                                                    }}
-                                                    className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
+                                                <a
+                                                    href={`http://localhost:8000${submission.torUrl}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2"
                                                 >
-                                                    View Final TOR
-                                                </button>
+                                                    <span className="w-4 h-4">📄</span>
+                                                    View Uploaded TOR
+                                                </a>
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* Show View TOR Logic only if Finalized */}
+                                    {(submission.status === 'Finalized' || submission.progress === 3) && (
+                                        <div className="mt-4 flex justify-end">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // prevent collapsing the card
+                                                    navigate(`/student/finalDocument/${userName}`);
+                                                }}
+                                                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
+                                            >
+                                                View Final TOR
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

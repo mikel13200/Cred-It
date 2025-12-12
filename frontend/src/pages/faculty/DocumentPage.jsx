@@ -387,18 +387,22 @@ export default function DocumentPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex gap-2">
-                          <button
-                            onClick={() => updateEvaluation(entry.id, 'Accepted')}
-                            className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200"
-                          >
-                            Accept
-                          </button>
-                          <button
-                            onClick={() => updateEvaluation(entry.id, 'Denied')}
-                            className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
-                          >
-                            Deny
-                          </button>
+                          {entry.credit_evaluation !== 'Accepted' && (
+                            <button
+                              onClick={() => updateEvaluation(entry.id, 'Accepted')}
+                              className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200"
+                            >
+                              Accept
+                            </button>
+                          )}
+                          {entry.credit_evaluation !== 'Denied' && (
+                            <button
+                              onClick={() => updateEvaluation(entry.id, 'Denied')}
+                              className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                            >
+                              Deny
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -547,18 +551,22 @@ export default function DocumentPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        <button
-                          onClick={() => updateEvaluation(entry.id, 'Accepted')}
-                          className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200"
-                        >
-                          Accept
-                        </button>
-                        <button
-                          onClick={() => updateEvaluation(entry.id, 'Denied')}
-                          className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
-                        >
-                          Deny
-                        </button>
+                        {entry.credit_evaluation !== 'Accepted' && (
+                          <button
+                            onClick={() => updateEvaluation(entry.id, 'Accepted')}
+                            className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200"
+                          >
+                            Accept
+                          </button>
+                        )}
+                        {entry.credit_evaluation !== 'Denied' && (
+                          <button
+                            onClick={() => updateEvaluation(entry.id, 'Denied')}
+                            className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                          >
+                            Deny
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -157,6 +157,7 @@ export default function FinalDocumentPage() {
                   <th className="px-3 py-2 font-medium">Units</th>
                   <th className="px-3 py-2 font-medium">Final Grade</th>
                   <th className="px-3 py-2 font-medium">Remarks</th>
+                  <th className="px-3 py-2 font-medium">Evaluation</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,11 +169,19 @@ export default function FinalDocumentPage() {
                       <td className="px-3 py-2">{entry.total_academic_units}</td>
                       <td className="px-3 py-2">{entry.final_grade}</td>
                       <td className="px-3 py-2">{entry.remarks}</td>
+                      <td className={`px-3 py-2 font-medium ${entry.credit_evaluation === 'Accepted'
+                          ? 'text-green-600'
+                          : entry.credit_evaluation === 'Denied'
+                            ? 'text-red-600'
+                            : 'text-gray-500'
+                        }`}>
+                        {entry.credit_evaluation || 'Void'}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="px-3 py-3 text-center text-gray-500">
+                    <td colSpan="6" className="px-3 py-3 text-center text-gray-500">
                       No applicant TOR found.
                     </td>
                   </tr>
